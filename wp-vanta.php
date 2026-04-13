@@ -136,6 +136,25 @@ function wp_vanta_enqueue_scripts() {
     wp_localize_script( 'wp-vanta-init', 'wpVantaEffect', $effect );
 }
 
+// Enqueue admin scripts and styles
+add_action( 'admin_enqueue_scripts', 'wp_vanta_enqueue_admin_scripts' );
+function wp_vanta_enqueue_admin_scripts( $hook_suffix ) {
+    // Only enqueue on plugin settings page
+    if ( 'settings_page_wp-vanta' !== $hook_suffix ) {
+        return;
+    }
+    
+    // Enqueue WordPress color picker
+    wp_enqueue_style( 'wp-color-picker' );
+    wp_enqueue_script( 'wp-color-picker' );
+    
+    // Enqueue admin styles
+    wp_enqueue_style( 'wp-vanta-admin', plugin_dir_url( __FILE__ ) . 'assets/css/admin-style.css', array(), '1.0.0' );
+    
+    // Enqueue color picker init script
+    wp_enqueue_script( 'wp-vanta-color-picker', plugin_dir_url( __FILE__ ) . 'assets/js/color-picker.js', array( 'wp-color-picker' ), '1.0.0', true );
+}
+
 // Admin menu
 add_action( 'admin_menu', 'wp_vanta_add_admin_menu' );
 function wp_vanta_add_admin_menu() {
@@ -194,30 +213,30 @@ function wp_vanta_settings_init() {
     add_settings_field( 'lowlightColor', __( 'Lowlight Color', 'wp-vanta' ), 'wp_vanta_color_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'lowlightColor', 'label' => 'Lowlight Color' ) );
     
     // Numeric params
-    add_settings_field( 'speed', __( 'Speed', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'speed', 'min' => 0, 'step' => 0.01 ) );
-    add_settings_field( 'scale', __( 'Scale', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'scale', 'min' => 0, 'step' => 0.01 ) );
-    add_settings_field( 'scaleMobile', __( 'Scale Mobile', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'scaleMobile', 'min' => 0, 'step' => 0.01 ) );
-    add_settings_field( 'zoom', __( 'Zoom', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'zoom', 'min' => 0, 'step' => 0.1 ) );
-    add_settings_field( 'shininess', __( 'Shininess', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'shininess', 'min' => 0, 'step' => 1 ) );
-    add_settings_field( 'waveHeight', __( 'Wave Height', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'waveHeight', 'min' => 0, 'step' => 0.1 ) );
-    add_settings_field( 'waveSpeed', __( 'Wave Speed', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'waveSpeed', 'min' => 0, 'step' => 0.1 ) );
-    add_settings_field( 'blurFactor', __( 'Blur Factor', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'blurFactor', 'min' => 0, 'step' => 0.01 ) );
-    add_settings_field( 'size', __( 'Size', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'size', 'min' => 0, 'step' => 0.1 ) );
+    add_settings_field( 'speed', __( 'Speed', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'speed', 'min' => 0, 'max' => 5, 'step' => 0.1 ) );
+    add_settings_field( 'scale', __( 'Scale', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'scale', 'min' => 0, 'max' => 5, 'step' => 0.1 ) );
+    add_settings_field( 'scaleMobile', __( 'Scale Mobile', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'scaleMobile', 'min' => 0, 'max' => 5, 'step' => 0.1 ) );
+    add_settings_field( 'zoom', __( 'Zoom', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'zoom', 'min' => 0, 'max' => 3, 'step' => 0.1 ) );
+    add_settings_field( 'shininess', __( 'Shininess', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'shininess', 'min' => 0, 'max' => 100, 'step' => 1 ) );
+    add_settings_field( 'waveHeight', __( 'Wave Height', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'waveHeight', 'min' => 0, 'max' => 50, 'step' => 0.1 ) );
+    add_settings_field( 'waveSpeed', __( 'Wave Speed', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'waveSpeed', 'min' => 0, 'max' => 3, 'step' => 0.1 ) );
+    add_settings_field( 'blurFactor', __( 'Blur Factor', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'blurFactor', 'min' => 0, 'max' => 1, 'step' => 0.01 ) );
+    add_settings_field( 'size', __( 'Size', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'size', 'min' => 0, 'max' => 10, 'step' => 0.1 ) );
     add_settings_field( 'backgroundAlpha', __( 'Background Alpha', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'backgroundAlpha', 'min' => 0, 'max' => 1, 'step' => 0.1 ) );
-    add_settings_field( 'points', __( 'Points', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'points', 'min' => 1, 'step' => 1 ) );
-    add_settings_field( 'maxDistance', __( 'Max Distance', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'maxDistance', 'min' => 0, 'step' => 1 ) );
-    add_settings_field( 'spacing', __( 'Spacing', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'spacing', 'min' => 0, 'step' => 1 ) );
-    add_settings_field( 'quantity', __( 'Quantity', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'quantity', 'min' => 1, 'step' => 1 ) );
-    add_settings_field( 'birdSize', __( 'Bird Size', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'birdSize', 'min' => 0.1, 'step' => 0.1 ) );
-    add_settings_field( 'wingSpan', __( 'Wing Span', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'wingSpan', 'min' => 0, 'step' => 1 ) );
-    add_settings_field( 'speedLimit', __( 'Speed Limit', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'speedLimit', 'min' => 0, 'step' => 0.1 ) );
-    add_settings_field( 'separation', __( 'Separation', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'separation', 'min' => 0, 'step' => 1 ) );
-    add_settings_field( 'alignment', __( 'Alignment', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'alignment', 'min' => 0, 'step' => 1 ) );
-    add_settings_field( 'cohesion', __( 'Cohesion', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'cohesion', 'min' => 0, 'step' => 1 ) );
-    add_settings_field( 'amplitudeFactor', __( 'Amplitude Factor', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'amplitudeFactor', 'min' => 0, 'step' => 0.1 ) );
-    add_settings_field( 'xOffset', __( 'X Offset', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'xOffset', 'step' => 0.1 ) );
-    add_settings_field( 'yOffset', __( 'Y Offset', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'yOffset', 'step' => 0.1 ) );
-    add_settings_field( 'chaos', __( 'Chaos', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'chaos', 'min' => 0, 'step' => 0.1 ) );
+    add_settings_field( 'points', __( 'Points', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'points', 'min' => 1, 'max' => 50, 'step' => 1 ) );
+    add_settings_field( 'maxDistance', __( 'Max Distance', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'maxDistance', 'min' => 0, 'max' => 100, 'step' => 1 ) );
+    add_settings_field( 'spacing', __( 'Spacing', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'spacing', 'min' => 0, 'max' => 100, 'step' => 1 ) );
+    add_settings_field( 'quantity', __( 'Quantity', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'quantity', 'min' => 1, 'max' => 50, 'step' => 1 ) );
+    add_settings_field( 'birdSize', __( 'Bird Size', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'birdSize', 'min' => 0.1, 'max' => 5, 'step' => 0.1 ) );
+    add_settings_field( 'wingSpan', __( 'Wing Span', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'wingSpan', 'min' => 1, 'max' => 100, 'step' => 1 ) );
+    add_settings_field( 'speedLimit', __( 'Speed Limit', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'speedLimit', 'min' => 0, 'max' => 20, 'step' => 0.1 ) );
+    add_settings_field( 'separation', __( 'Separation', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'separation', 'min' => 0, 'max' => 100, 'step' => 1 ) );
+    add_settings_field( 'alignment', __( 'Alignment', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'alignment', 'min' => 0, 'max' => 100, 'step' => 1 ) );
+    add_settings_field( 'cohesion', __( 'Cohesion', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'cohesion', 'min' => 0, 'max' => 100, 'step' => 1 ) );
+    add_settings_field( 'amplitudeFactor', __( 'Amplitude Factor', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'amplitudeFactor', 'min' => 0, 'max' => 5, 'step' => 0.1 ) );
+    add_settings_field( 'xOffset', __( 'X Offset', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'xOffset', 'min' => -10, 'max' => 10, 'step' => 0.1 ) );
+    add_settings_field( 'yOffset', __( 'Y Offset', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'yOffset', 'min' => -10, 'max' => 10, 'step' => 0.1 ) );
+    add_settings_field( 'chaos', __( 'Chaos', 'wp-vanta' ), 'wp_vanta_number_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'chaos', 'min' => 0, 'max' => 5, 'step' => 0.1 ) );
     
     // Boolean options
     add_settings_field( 'showDots', __( 'Show Dots', 'wp-vanta' ), 'wp_vanta_checkbox_input_render', 'wp-vanta', 'wp_vanta_section', array( 'key' => 'showDots' ) );
@@ -275,12 +294,20 @@ function wp_vanta_gyro_controls_render() {
 
 function wp_vanta_min_height_render() {
     $options = get_option( 'wp_vanta_options' );
-    echo '<input type="number" step="0.01" name="wp_vanta_options[minHeight]" value="' . esc_attr( $options['minHeight'] ?? 200 ) . '" />';
+    $value = $options['minHeight'] ?? 200;
+    echo '<div class="wp-vanta-slider-container">';
+    echo '<input type="range" class="wp-vanta-slider" name="wp_vanta_options[minHeight]" value="' . esc_attr( $value ) . '" min="0" max="1000" step="10" onchange="document.getElementById(\'display_minHeight\').textContent = this.value" />';
+    echo '<span class="wp-vanta-slider-value" id="display_minHeight">' . esc_html( $value ) . '</span>';
+    echo '</div>';
 }
 
 function wp_vanta_min_width_render() {
     $options = get_option( 'wp_vanta_options' );
-    echo '<input type="number" step="0.01" name="wp_vanta_options[minWidth]" value="' . esc_attr( $options['minWidth'] ?? 200 ) . '" />';
+    $value = $options['minWidth'] ?? 200;
+    echo '<div class="wp-vanta-slider-container">';
+    echo '<input type="range" class="wp-vanta-slider" name="wp_vanta_options[minWidth]" value="' . esc_attr( $value ) . '" min="0" max="1000" step="10" onchange="document.getElementById(\'display_minWidth\').textContent = this.value" />';
+    echo '<span class="wp-vanta-slider-value" id="display_minWidth">' . esc_html( $value ) . '</span>';
+    echo '</div>';
 }
 
 // Generic color input render
@@ -289,7 +316,10 @@ function wp_vanta_color_input_render( $args = array() ) {
     if ( empty( $key ) ) return;
     
     $defaults = array(
-        'skyColor' => '0x1ea6e6',
+    // Convert hex with 0x prefix to # format for color picker
+    $color_value = str_replace( '0x', '#', $value );
+    
+    echo '<input type="text" name="wp_vanta_options[' . esc_attr( $key ) . ']" value="' . esc_attr( $value ) . '" class="wp-vanta-color-picker" data-color="' . esc_attr( $color_value ) . '
         'cloudColor' => '0xa525eb',
         'sunColor' => '0xff0000',
         'sunGlareColor' => '0x4830ff',
@@ -302,10 +332,21 @@ function wp_vanta_color_input_render( $args = array() ) {
         'baseColor' => '0xffebeb',
         'highlightColor' => '0xffe300',
         'midtoneColor' => '0xff1f00',
-        'lowlightColor' => '0x2d10ff'
-    );
-    
-    $options = get_option( 'wp_vanta_options' );
+    // If min and max are defined, use a slider
+    if ( ! empty( $min ) && ! empty( $max ) ) {
+        echo '<div class="wp-vanta-slider-container">';
+        echo '<input type="range" class="wp-vanta-slider" name="wp_vanta_options[' . esc_attr( $key ) . ']" value="' . esc_attr( $value ) . '" ';
+        echo 'min="' . esc_attr( $min ) . '" max="' . esc_attr( $max ) . '" step="' . esc_attr( $step ) . '" ';
+        echo 'onchange="document.getElementById(\'display_' . esc_attr( $key ) . '\').textContent = this.value" />';
+        echo '<span class="wp-vanta-slider-value" id="display_' . esc_attr( $key ) . '">' . esc_html( $value ) . '</span>';
+        echo '</div>';
+    } else {
+        // Otherwise use a standard number input
+        echo '<input type="number" name="wp_vanta_options[' . esc_attr( $key ) . ']" value="' . esc_attr( $value ) . '" ';
+        if ( ! empty( $min ) ) echo 'min="' . esc_attr( $min ) . '" ';
+        if ( ! empty( $max ) ) echo 'max="' . esc_attr( $max ) . '" ';
+        echo 'step="' . esc_attr( $step ) . '" style="width: 150px;" />';
+    }
     $value = isset( $options[ $key ] ) ? $options[ $key ] : ( isset( $defaults[ $key ] ) ? $defaults[ $key ] : '' );
     
     echo '<input type="text" name="wp_vanta_options[' . esc_attr( $key ) . ']" value="' . esc_attr( $value ) . '" placeholder="0x000000" style="width: 150px;" />';
