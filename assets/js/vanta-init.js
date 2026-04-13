@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof VANTA !== 'undefined' && VANTA.CLOUDS) {
         // Parse colors from hex string to number
         var options = {
-            el: "body",
+            el: ".vanta-canvas",
             mouseControls: wpVantaOptions.mouseControls || true,
             touchControls: wpVantaOptions.touchControls || true,
             gyroControls: wpVantaOptions.gyroControls || false,

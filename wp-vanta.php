@@ -42,6 +42,12 @@ function wp_vanta_deactivate() {
     // delete_option( 'wp_vanta_options' );
 }
 
+// Add Vanta canvas div to the top of the DOM
+add_action( 'wp_body_open', 'wp_vanta_add_canvas_div' );
+function wp_vanta_add_canvas_div() {
+    echo '<div class="vanta-canvas"></div>';
+}
+
 // Enqueue scripts and styles
 add_action( 'wp_enqueue_scripts', 'wp_vanta_enqueue_scripts' );
 function wp_vanta_enqueue_scripts() {
