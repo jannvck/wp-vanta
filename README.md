@@ -24,13 +24,58 @@ To enable automatic updates from this repository, install a plugin like [GitHub 
 
 ## Settings
 
-- **Effect**: Choose from 10+ Vanta.js effects
+The plugin provides comprehensive customization options for each Vanta.js effect. Common settings include:
+
+### General Settings (All Effects)
 - **Mouse Controls**: Enable/disable mouse interaction
 - **Touch Controls**: Enable/disable touch interaction
-- **Gyro Controls**: Enable/disable gyroscope controls
+- **Gyro Controls**: Enable/disable gyroscope controls (mobile)
 - **Min Height/Width**: Minimum dimensions for the effect
-- **Colors**: Customize sky, cloud, sun, glare, and sunlight colors (hex format, e.g. 0x1ea6e6)
-- **Speed**: Animation speed
+
+### Effect-Specific Settings
+
+**Clouds & Clouds 2**
+- Sky Color, Cloud Color, Light Color, Sun Color, Sun Glare Color, Sunlight Color
+- Speed
+
+**Waves**
+- Color, Shininess, Wave Height, Wave Speed, Zoom
+
+**Birds**
+- Colors, Size, Quantity, Wing Span, Speed Limit, Separation, Alignment, Cohesion
+- Background Color & Alpha
+
+**Fog**
+- Highlight Color, Midtone Color, Lowlight Color, Base Color
+- Blur Factor, Zoom, Speed
+
+**Topology**
+- Scale, Scale Mobile
+
+**NET & Dots**
+- Color, Background Color
+- Points, Max Distance, Spacing
+- Show Dots/Lines toggle
+
+**Cells**
+- Color 1 & Color 2
+- Size, Speed
+
+**Globe**
+- Color, Color 2, Background Color
+- Size
+
+**Rings**
+- Color, Background Color
+- Background Alpha
+
+**Trunk** (p5.js based)
+- Color, Color 2, Background Color
+- Spacing, Chaos
+
+**Halo**
+- Base Color, Background Color
+- Size, Amplitude Factor, X/Y Offset
 
 ## Available Effects
 
