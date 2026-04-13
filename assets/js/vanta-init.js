@@ -16,6 +16,11 @@ document.addEventListener('DOMContentLoaded', function() {
             speed: parseFloat(wpVantaOptions.speed) || 0.60
         };
 
-        VANTA.CLOUDS(options);
+        var effect = VANTA.CLOUDS(options);
+        
+        // Add vanta-container class to the canvas element
+        if (effect && effect.canvas) {
+            effect.canvas.classList.add('vanta-container');
+        }
     }
 });

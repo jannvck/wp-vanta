@@ -42,9 +42,12 @@ function wp_vanta_deactivate() {
     // delete_option( 'wp_vanta_options' );
 }
 
-// Enqueue scripts
+// Enqueue scripts and styles
 add_action( 'wp_enqueue_scripts', 'wp_vanta_enqueue_scripts' );
 function wp_vanta_enqueue_scripts() {
+    // Enqueue CSS
+    wp_enqueue_style( 'wp-vanta-style', plugin_dir_url( __FILE__ ) . 'assets/css/vanta-style.css', array(), '1.0.0' );
+    
     // Enqueue Three.js
     wp_enqueue_script( 'three-js', 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js', array(), 'r134', true );
     

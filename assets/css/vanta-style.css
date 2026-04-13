@@ -1,0 +1,8 @@
+.overlay,
+.vanta-container {
+  position: fixed;     /* attach to viewport */
+  inset: 0;            /* shorthand for top/right/bottom/left: 0 */
+  width: 100vw;        /* optional, ensures full width */
+  height: 100vh;       /* optional, ensures full height */
+  z-index: -1;         /* below normal content */
+}
