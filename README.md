@@ -11,9 +11,14 @@ A WordPress plugin that integrates Vanta.js to add an animated CLOUDS background
 
 ## Installation
 
-1. Upload the `wp-vanta` folder to the `/wp-content/plugins/` directory
-2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Go to Settings > WP Vanta to customize the background
+1. Download the latest `wp-vanta.zip` from [Releases](https://github.com/jannvck/wp-vanta/releases)
+2. Upload and install via WordPress admin (Plugins > Add New > Upload Plugin)
+3. Activate the plugin
+4. Go to Settings > WP Vanta to customize the background
+
+## Automatic Updates
+
+To enable automatic updates from this repository, install a plugin like [GitHub Updater](https://github.com/afragen/github-updater) and configure it to check this repo.
 
 ## Settings
 
@@ -28,6 +33,12 @@ A WordPress plugin that integrates Vanta.js to add an animated CLOUDS background
 
 - WordPress 4.0+
 - Modern browser with WebGL support
+
+## Development
+
+- Clone the repo
+- Create a new release on GitHub to trigger automatic zip generation
+- The workflow will create and attach `wp-vanta.zip` to the release
 
 ## Notes
 
