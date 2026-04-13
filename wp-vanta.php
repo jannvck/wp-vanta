@@ -313,13 +313,12 @@ function wp_vanta_min_width_render() {
 // Generic color input render
 function wp_vanta_color_input_render( $args = array() ) {
     $key = isset( $args['key'] ) ? $args['key'] : '';
-    if ( empty( $key ) ) return;
-    
+    if ( empty( $key ) ) {
+        return;
+    }
+
     $defaults = array(
-    // Convert hex with 0x prefix to # format for color picker
-    $color_value = str_replace( '0x', '#', $value );
-    
-    echo '<input type="text" name="wp_vanta_options[' . esc_attr( $key ) . ']" value="' . esc_attr( $value ) . '" class="wp-vanta-color-picker" data-color="' . esc_attr( $color_value ) . '
+        'skyColor' => '0x1ea6e6',
         'cloudColor' => '0xa525eb',
         'sunColor' => '0xff0000',
         'sunGlareColor' => '0x4830ff',
@@ -332,8 +331,32 @@ function wp_vanta_color_input_render( $args = array() ) {
         'baseColor' => '0xffebeb',
         'highlightColor' => '0xffe300',
         'midtoneColor' => '0xff1f00',
-    // If min and max are defined, use a slider
-    if ( ! empty( $min ) && ! empty( $max ) ) {
+        'lowlightColor' => '0x2d10ff'
+    );
+
+    $options = get_option( 'wp_vanta_options' );
+    $value = isset( $options[ $key ] ) ? $options[ $key ] : ( isset( $defaults[ $key ] ) ? $defaults[ $key ] : '' );
+    $color_value = preg_replace( '/^0x/i', '#', $value );
+
+    echo '<input type="text" name="wp_vanta_options[' . esc_attr( $key ) . ']" value="' . esc_attr( $value ) . '" class="wp-vanta-color-picker" data-color="' . esc_attr( $color_value ) . '" />';
+    echo '<p class="description">Hex color format (e.g. 0x1ea6e6)</p>';
+}
+
+// Generic number input render
+function wp_vanta_number_input_render( $args = array() ) {
+    $key = isset( $args['key'] ) ? $args['key'] : '';
+    if ( empty( $key ) ) {
+        return;
+    }
+
+    $options = get_option( 'wp_vanta_options' );
+    $value = isset( $options[ $key ] ) ? $options[ $key ] : '';
+
+    $min = isset( $args['min'] ) ? $args['min'] : '';
+    $max = isset( $args['max'] ) ? $args['max'] : '';
+    $step = isset( $args['step'] ) ? $args['step'] : '0.01';
+
+    if ( $min !== '' && $max !== '' ) {
         echo '<div class="wp-vanta-slider-container">';
         echo '<input type="range" class="wp-vanta-slider" name="wp_vanta_options[' . esc_attr( $key ) . ']" value="' . esc_attr( $value ) . '" ';
         echo 'min="' . esc_attr( $min ) . '" max="' . esc_attr( $max ) . '" step="' . esc_attr( $step ) . '" ';
@@ -341,34 +364,15 @@ function wp_vanta_color_input_render( $args = array() ) {
         echo '<span class="wp-vanta-slider-value" id="display_' . esc_attr( $key ) . '">' . esc_html( $value ) . '</span>';
         echo '</div>';
     } else {
-        // Otherwise use a standard number input
         echo '<input type="number" name="wp_vanta_options[' . esc_attr( $key ) . ']" value="' . esc_attr( $value ) . '" ';
-        if ( ! empty( $min ) ) echo 'min="' . esc_attr( $min ) . '" ';
-        if ( ! empty( $max ) ) echo 'max="' . esc_attr( $max ) . '" ';
+        if ( $min !== '' ) {
+            echo 'min="' . esc_attr( $min ) . '" ';
+        }
+        if ( $max !== '' ) {
+            echo 'max="' . esc_attr( $max ) . '" ';
+        }
         echo 'step="' . esc_attr( $step ) . '" style="width: 150px;" />';
     }
-    $value = isset( $options[ $key ] ) ? $options[ $key ] : ( isset( $defaults[ $key ] ) ? $defaults[ $key ] : '' );
-    
-    echo '<input type="text" name="wp_vanta_options[' . esc_attr( $key ) . ']" value="' . esc_attr( $value ) . '" placeholder="0x000000" style="width: 150px;" />';
-    echo '<p class="description">Hex color format (e.g. 0x1ea6e6)</p>';
-}
-
-// Generic number input render
-function wp_vanta_number_input_render( $args = array() ) {
-    $key = isset( $args['key'] ) ? $args['key'] : '';
-    if ( empty( $key ) ) return;
-    
-    $options = get_option( 'wp_vanta_options' );
-    $value = isset( $options[ $key ] ) ? $options[ $key ] : '';
-    
-    $min = isset( $args['min'] ) ? $args['min'] : '';
-    $max = isset( $args['max'] ) ? $args['max'] : '';
-    $step = isset( $args['step'] ) ? $args['step'] : '0.01';
-    
-    echo '<input type="number" name="wp_vanta_options[' . esc_attr( $key ) . ']" value="' . esc_attr( $value ) . '" ';
-    if ( ! empty( $min ) ) echo 'min="' . esc_attr( $min ) . '" ';
-    if ( ! empty( $max ) ) echo 'max="' . esc_attr( $max ) . '" ';
-    echo 'step="' . esc_attr( $step ) . '" style="width: 150px;" />';
 }
 
 // Generic checkbox input render
