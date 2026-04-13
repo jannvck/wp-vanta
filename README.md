@@ -1,13 +1,15 @@
 # WP Vanta Background
 
-A WordPress plugin that integrates Vanta.js to add an animated CLOUDS background to all pages, working across all themes.
+A WordPress plugin that integrates Vanta.js to add animated background effects to all WordPress pages. Choose from multiple effects (Birds, Clouds, Fog, Waves, Topology, and more) with full customization via admin settings.
 
 ## Features
 
-- Adds a beautiful animated clouds background using Vanta.js
+- Adds beautiful animated Vanta.js background effects to all pages
+- Support for 10+ different effects (Birds, Clouds, Clouds 2, Fog, Halo, Net, Noise, Topology, Trunk, Waves)
 - Customizable settings via WordPress admin
 - Theme-agnostic: works with any WordPress theme
 - Lightweight: loads scripts from CDN
+- Full control over effect parameters and colors
 
 ## Installation
 
@@ -22,6 +24,7 @@ To enable automatic updates from this repository, install a plugin like [GitHub 
 
 ## Settings
 
+- **Effect**: Choose from 10+ Vanta.js effects
 - **Mouse Controls**: Enable/disable mouse interaction
 - **Touch Controls**: Enable/disable touch interaction
 - **Gyro Controls**: Enable/disable gyroscope controls
@@ -29,10 +32,23 @@ To enable automatic updates from this repository, install a plugin like [GitHub 
 - **Colors**: Customize sky, cloud, sun, glare, and sunlight colors (hex format, e.g. 0x1ea6e6)
 - **Speed**: Animation speed
 
+## Available Effects
+
+- **Birds** - Animated flying birds
+- **Clouds** - Fluffy cloud effects (default)
+- **Clouds 2** - Alternative cloud rendering
+- **Fog** - Atmospheric fog effect
+- **Halo** - Glowing halo effect
+- **Net** - Network-style pattern
+- **Noise** - Perlin noise animation
+- **Topology** - Topographic/elevation map effect
+- **Trunk** - Tree trunk/branch effect (p5.js based)
+- **Waves** - Animated wave effect
+
 ## Requirements
 
 - WordPress 4.0+
-- Modern browser with WebGL support
+- Modern browser with WebGL support (except Trunk which uses p5.js)
 
 ## Development
 
@@ -42,5 +58,6 @@ To enable automatic updates from this repository, install a plugin like [GitHub 
 
 ## Notes
 
-- The effect uses WebGL and may not work on very old devices
+- Some effects may not perform optimally on older devices
 - For mobile devices, consider disabling some controls for better performance
+- The Trunk effect uses p5.js instead of Three.js

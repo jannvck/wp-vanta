@@ -1,21 +1,27 @@
 document.addEventListener('DOMContentLoaded', function() {
-    if (typeof VANTA !== 'undefined' && VANTA.CLOUDS) {
-        // Parse colors from hex string to number
-        var options = {
-            el: ".vanta-canvas",
-            mouseControls: wpVantaOptions.mouseControls || true,
-            touchControls: wpVantaOptions.touchControls || true,
-            gyroControls: wpVantaOptions.gyroControls || false,
-            minHeight: parseFloat(wpVantaOptions.minHeight) || 200.00,
-            minWidth: parseFloat(wpVantaOptions.minWidth) || 200.00,
-            skyColor: parseInt(wpVantaOptions.skyColor.replace('0x', ''), 16) || 0x1ea6e6,
-            cloudColor: parseInt(wpVantaOptions.cloudColor.replace('0x', ''), 16) || 0xa525eb,
-            sunColor: parseInt(wpVantaOptions.sunColor.replace('0x', ''), 16) || 0xff0000,
-            sunGlareColor: parseInt(wpVantaOptions.sunGlareColor.replace('0x', ''), 16) || 0x4830ff,
-            sunlightColor: parseInt(wpVantaOptions.sunlightColor.replace('0x', ''), 16) || 0x25cce3,
-            speed: parseFloat(wpVantaOptions.speed) || 0.60
-        };
+    if (typeof VANTA !== 'undefined' && wpVantaEffect) {
+        // Get the effect name (capitalized for VANTA object)
+        var effectName = wpVantaEffect.charAt(0).toUpperCase() + wpVantaEffect.slice(1).toUpperCase();
+        var VantaEffect = VANTA[effectName];
+        
+        if (typeof VantaEffect !== 'undefined') {
+            // Parse colors from hex string to number
+            var options = {
+                el: ".vanta-canvas",
+                mouseControls: wpVantaOptions.mouseControls || true,
+                touchControls: wpVantaOptions.touchControls || true,
+                gyroControls: wpVantaOptions.gyroControls || false,
+                minHeight: parseFloat(wpVantaOptions.minHeight) || 200.00,
+                minWidth: parseFloat(wpVantaOptions.minWidth) || 200.00,
+                skyColor: parseInt(wpVantaOptions.skyColor.replace('0x', ''), 16) || 0x1ea6e6,
+                cloudColor: parseInt(wpVantaOptions.cloudColor.replace('0x', ''), 16) || 0xa525eb,
+                sunColor: parseInt(wpVantaOptions.sunColor.replace('0x', ''), 16) || 0xff0000,
+                sunGlareColor: parseInt(wpVantaOptions.sunGlareColor.replace('0x', ''), 16) || 0x4830ff,
+                sunlightColor: parseInt(wpVantaOptions.sunlightColor.replace('0x', ''), 16) || 0x25cce3,
+                speed: parseFloat(wpVantaOptions.speed) || 0.60
+            };
 
-        VANTA.CLOUDS(options);
+            VantaEffect(options);
+        }
     }
 });

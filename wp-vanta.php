@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WP Vanta Background
  * Plugin URI: 
- * Description: Adds Vanta.js animated CLOUDS background to all WordPress pages with customizable settings.
+ * Description: Adds animated Vanta.js background effects to all WordPress pages. Choose from multiple effects (Birds, Clouds, Fog, Waves, etc.) with full customization via admin settings.
  * Version: 1.0.0
  * Author: 
  * License: GPL v2 or later
@@ -20,6 +20,7 @@ register_activation_hook( __FILE__, 'wp_vanta_activate' );
 function wp_vanta_activate() {
     // Set default options
     $defaults = array(
+        'effect' => 'clouds',
         'mouseControls' => true,
         'touchControls' => true,
         'gyroControls' => false,
@@ -54,18 +55,30 @@ function wp_vanta_enqueue_scripts() {
     // Enqueue CSS
     wp_enqueue_style( 'wp-vanta-style', plugin_dir_url( __FILE__ ) . 'assets/css/vanta-style.css', array(), '1.0.0' );
     
-    // Enqueue Three.js
-    wp_enqueue_script( 'three-js', 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js', array(), 'r134', true );
+    // Get selected effect
+    $options = get_option( 'wp_vanta_options', array() );
+    $effect = isset( $options['effect'] ) ? strtolower( $options['effect'] ) : 'clouds';
     
-    // Enqueue Vanta CLOUDS
-    wp_enqueue_script( 'vanta-clouds', 'https://cdn.jsdelivr.net/npm/vanta/dist/vanta.clouds.min.js', array( 'three-js' ), null, true );
+    // Enqueue Three.js or p5.js depending on effect
+    $p5_effects = array( 'trunk' );
+    if ( in_array( $effect, $p5_effects ) ) {
+        wp_enqueue_script( 'p5-js', 'https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js', array(), '1.4.0', true );
+        $vanta_deps = array( 'p5-js' );
+    } else {
+        wp_enqueue_script( 'three-js', 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js', array(), 'r134', true );
+        $vanta_deps = array( 'three-js' );
+    }
+    
+    // Enqueue the selected Vanta effect
+    $vanta_url = 'https://cdn.jsdelivr.net/npm/vanta/dist/vanta.' . $effect . '.min.js';
+    wp_enqueue_script( 'vanta-effect', $vanta_url, $vanta_deps, null, true );
     
     // Enqueue custom init script
-    wp_enqueue_script( 'wp-vanta-init', plugin_dir_url( __FILE__ ) . 'assets/js/vanta-init.js', array( 'vanta-clouds' ), '1.0.0', true );
+    wp_enqueue_script( 'wp-vanta-init', plugin_dir_url( __FILE__ ) . 'assets/js/vanta-init.js', array( 'vanta-effect' ), '1.0.0', true );
     
     // Localize options
-    $options = get_option( 'wp_vanta_options', array() );
     wp_localize_script( 'wp-vanta-init', 'wpVantaOptions', $options );
+    wp_localize_script( 'wp-vanta-init', 'wpVantaEffect', $effect );
 }
 
 // Admin menu
@@ -95,7 +108,10 @@ add_action( 'admin_init', 'wp_vanta_settings_init' );
 function wp_vanta_settings_init() {
     register_setting( 'wp_vanta_options_group', 'wp_vanta_options' );
     
-    add_settings_section( 'wp_vanta_section', __( 'Vanta CLOUDS Settings', 'wp-vanta' ), null, 'wp-vanta' );
+    add_settings_section( 'wp_vanta_section', __( 'Vanta Settings', 'wp-vanta' ), null, 'wp-vanta' );
+    
+    // Effect selection
+    add_settings_field( 'effect', __( 'Effect', 'wp-vanta' ), 'wp_vanta_effect_render', 'wp-vanta', 'wp_vanta_section' );
     
     // Controls
     add_settings_field( 'mouseControls', __( 'Mouse Controls', 'wp-vanta' ), 'wp_vanta_mouse_controls_render', 'wp-vanta', 'wp_vanta_section' );
@@ -118,6 +134,32 @@ function wp_vanta_settings_init() {
 }
 
 // Render functions
+function wp_vanta_effect_render() {
+    $options = get_option( 'wp_vanta_options' );
+    $selected = isset( $options['effect'] ) ? $options['effect'] : 'clouds';
+    
+    $effects = array(
+        'birds' => 'Birds',
+        'clouds' => 'Clouds',
+        'clouds2' => 'Clouds 2',
+        'fog' => 'Fog',
+        'halo' => 'Halo',
+        'net' => 'Net',
+        'noise' => 'Noise',
+        'topology' => 'Topology',
+        'trunk' => 'Trunk',
+        'waves' => 'Waves'
+    );
+    
+    echo '<select name="wp_vanta_options[effect]">';
+    foreach ( $effects as $key => $label ) {
+        $is_selected = $selected === $key ? 'selected' : '';
+        echo '<option value="' . esc_attr( $key ) . '" ' . $is_selected . '>' . esc_html( $label ) . '</option>';
+    }
+    echo '</select>';
+    echo '<p class="description">Select which Vanta.js effect to display as the background.</p>';
+}
+
 function wp_vanta_mouse_controls_render() {
     $options = get_option( 'wp_vanta_options' );
     $checked = isset( $options['mouseControls'] ) && $options['mouseControls'] ? 'checked' : '';
