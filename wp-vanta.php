@@ -70,7 +70,7 @@ function wp_vanta_enqueue_scripts() {
     }
     
     // Enqueue the selected Vanta effect
-    $vanta_url = 'https://cdn.jsdelivr.net/npm/vanta/dist/vanta.' . $effect . '.min.js';
+    $vanta_url = 'https://unpkg.com/vanta/dist/vanta.' . $effect . '.min.js';
     wp_enqueue_script( 'vanta-effect', $vanta_url, $vanta_deps, null, true );
     
     // Enqueue custom init script
