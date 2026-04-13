@@ -5,7 +5,7 @@ A WordPress plugin that integrates Vanta.js to add animated background effects t
 ## Features
 
 - Adds beautiful animated Vanta.js background effects to all pages
-- Support for 10+ different effects (Birds, Clouds, Clouds 2, Fog, Halo, Net, Noise, Topology, Trunk, Waves)
+- Support for 13 different effects (Birds, Cells, Clouds, Clouds 2, Dots, Fog, Globe, Halo, Net, Rings, Topology, Trunk, Waves)
 - Customizable settings via WordPress admin
 - Theme-agnostic: works with any WordPress theme
 - Lightweight: loads scripts from CDN
@@ -35,12 +35,15 @@ To enable automatic updates from this repository, install a plugin like [GitHub 
 ## Available Effects
 
 - **Birds** - Animated flying birds
+- **Cells** - Cellular automata pattern
 - **Clouds** - Fluffy cloud effects (default)
 - **Clouds 2** - Alternative cloud rendering
+- **Dots** - Animated dot particles
 - **Fog** - Atmospheric fog effect
+- **Globe** - 3D rotating globe
 - **Halo** - Glowing halo effect
 - **Net** - Network-style pattern
-- **Noise** - Perlin noise animation
+- **Rings** - Colorful concentric rings
 - **Topology** - Topographic/elevation map effect
 - **Trunk** - Tree trunk/branch effect (p5.js based)
 - **Waves** - Animated wave effect
